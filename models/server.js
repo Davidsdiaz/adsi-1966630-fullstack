@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { dbConnection } from '../Database/config.js'
+import categoria from '../routes/categoria.js'
 
 class Server{
     constructor(){
@@ -27,6 +28,8 @@ class Server{
     }
 
     routes(){
+
+this.app.use('/api/categoria', categoria)
 
     }
 
