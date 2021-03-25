@@ -1,4 +1,4 @@
-import Categoria from '../models/categoria.js'
+import Categoria from '../models/categoria.js';
 
 const categoriaGet=async (req,res)=>{
     const {value}= req.query;
@@ -39,4 +39,46 @@ const categoriaPost=async (req,res)=>{
     })
 }
 
-export {categoriaPost, categoriaGet, categoriaGetById}
+const categoriaPut=async(req,res)=>{
+    const {id}=req.params;
+
+    const {_id,createdAt,estado,__v,...resto}=req.body;
+
+    const categoria= await Categoria.findByIdAndUpdate(id,resto)
+
+    res.json({
+        categoria
+    })
+   
+
+
+}
+
+const categoriaPutActivar=async(req,res)=>{
+    const {id} =req.params;
+    const categoria=await Categoria.findByIdAndUpdate(id,{estado:1})
+
+    res.json({
+        categoria
+    })
+}
+
+    const categoriaPutDesactivar=async(req,res)=>{
+        const {id} =req.params;
+        const categoria=await Categoria.findByIdAndUpdate(id,{estado:0})
+    
+        res.json({
+            categoria
+        })
+}
+
+const categoriaDelete=async(req,res)=>{
+    const {id}=req.params;
+    const categoria=await Categoria.findByIdAndDelete(id)
+
+    res.json({
+        categoria
+    })
+}
+
+export {categoriaPost, categoriaGet, categoriaGetById, categoriaPut, categoriaPutActivar, categoriaPutDesactivar, categoriaDelete}

@@ -1,20 +1,30 @@
-import {Router} from 'express'
-import {categoriaGet, categoriaGetById, categoriaPost} from '../controllers/categoria.js';
+import {
+    Router
+} from 'express'
+import {
+    categoriaDelete,
+    categoriaGet,
+    categoriaGetById,
+    categoriaPost,
+    categoriaPut,
+    categoriaPutActivar,
+    categoriaPutDesactivar
+} from '../controllers/categoria.js';
 
 const router = Router();
 
-router.get('/',categoriaGet);
+router.get('/', categoriaGet);
 
-router.get('/:id',categoriaGetById);
+router.get('/:id', categoriaGetById);
 
-router.post('/',categoriaPost);
+router.post('/', categoriaPost);
 
-router.put('/');
+router.put('/:id', categoriaPut);
 
-router.put('/activar');
+router.put('/activar/:id', categoriaPutActivar);
 
-router.put('/desactivar');
+router.put('/desactivar/:id', categoriaPutDesactivar);
 
-router.delete('/');
+router.delete('/:id',categoriaDelete);
 
 export default router;
