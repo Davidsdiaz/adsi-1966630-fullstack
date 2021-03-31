@@ -1,4 +1,5 @@
 import bcryptjs from 'bcrypt'
+import { generarJWT } from '../Middlewares/validar-token.js';
 import Usuario from '../models/usuario.js'
 
 
@@ -34,6 +35,43 @@ const usuarioPost = async(req,res)=>{
     res.json ({
         usuario
     })
+}
+
+const login=async(req,res)=>{
+    const {email,password}=req.body
+    try {
+        const usuario=await Usuario.findOne({email})
+        if(!usuario){
+            return res.status(400).json({
+                msg:'Usuario/Password no son correctos'
+            })
+        }
+        if(usuario.estado==0){
+            return res.status(400).json({
+                msg:'Usuario/Password no son correctos'
+        })
+    }
+        const validarPassword=bcryptjs.compareSync(password,usuario.password)
+        if(!validarPassword){
+            return res.status(400).json({
+                msg:'Usuario/Password no son correctos'
+            })
+        }
+
+        const token = await generarJWT(usuario.id)
+
+        res.json({
+            usuario,
+            token
+        })
+
+    } 
+    catch (error){
+        return res.status(500).json({
+            error,
+            msg:'comuniquese con el administrador'
+        })
+    }
 }
 
 const usuarioPut= async(req,res)=>{
@@ -83,4 +121,4 @@ const usuarioDelete= async(req,res)=>{
     })
 }
 
-export {usuarioGet, usuarioPost,usuarioGetById,usuarioPut,usuarioPutActivar,usuarioPutDesactivar,usuarioDelete}
+export {usuarioGet, usuarioPost,usuarioGetById,usuarioPut,usuarioPutActivar,usuarioPutDesactivar,usuarioDelete,login}
