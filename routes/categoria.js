@@ -14,16 +14,19 @@ import {check} from 'express-validator'
 import validarCampos from '../Middlewares/validar-campos.js';
 import { existeCategoriaById, existeCategoriaByNombre } from '../helpers/db-categoria.js';
 import { validarJWT } from '../Middlewares/validar-token.js';
+import { validarRol } from '../Middlewares/validar-rol.js';
 
 const router = Router();
 
 router.get('/',[
     validarJWT,
+    validarRol('ALMACENISTA_ROL'),
     validarCampos
 ], categoriaGet);
 
 router.get('/:id',[
     validarJWT,
+    validarRol('ALMACENISTA_ROL'),
     check('id','No es un Id válido').isMongoId(),
     check('id').custom(existeCategoriaById),
     validarCampos
@@ -31,6 +34,7 @@ router.get('/:id',[
 
 router.post('/',[
     validarJWT,
+    validarRol('ALMACENISTA_ROL'),
     check('nombre','El nombre es obligatorio').not().isEmpty(),
     check('nombre').custom(existeCategoriaByNombre),
     validarCampos
@@ -38,6 +42,7 @@ router.post('/',[
 
 router.put('/:id',[
     validarJWT,
+    validarRol('ALMACENISTA_ROL'),
     check('id','No es un Id válido').isMongoId(),
     check('id').custom(existeCategoriaById),
     check('nombre').custom(existeCategoriaByNombre),
@@ -46,6 +51,7 @@ router.put('/:id',[
 
 router.put('/activar/:id',[
     validarJWT,
+    validarRol('ALMACENISTA_ROL'),
     check('id','No es un Id válido').isMongoId(),
     check('id').custom(existeCategoriaById),
     validarCampos
@@ -53,6 +59,7 @@ router.put('/activar/:id',[
 
 router.put('/desactivar/:id',[
     validarJWT,
+    validarRol('ALMACENISTA_ROL'),
     check('id','No es un Id válido').isMongoId(),
     check('id').custom(existeCategoriaById),
     validarCampos
@@ -60,6 +67,7 @@ router.put('/desactivar/:id',[
 
 router.delete('/:id',[
     validarJWT,
+    validarRol('ALMACENISTA_ROL'),
     check('id','No es un Id válido').isMongoId(),
     check('id').custom(existeCategoriaById),
     validarCampos
